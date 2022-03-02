@@ -36,22 +36,23 @@ def login():
         # change this to actually validate the entire form submission
         # and not just one field
         if  form.validate_on_submit():
-            if form.username.data != "" and form.password.data != "" :
             # Get the username and password values from the form.
-                username = form.username.data
-                password = form.username.data
+            username = form.username.data
+            password = form.password.data
             # using your model, query database for a user based on the username
             # and password submitted. Remember you need to compare the password hash.
             # You will need to import the appropriate function to do so.
             # Then store the result of that query to a `user` variable so it can be
             # passed to the login_user() method below.
-                user = UserProfile.query.filter_by(username=username)
-                if userobj is None and check_password_hash(userobj.password, password):
+            user = UserProfile.query.filter_by(username=username).first()
+            if user is not None and check_password_hash(user.password, password):
             # get user id, load into session
-                    login_user(user)
-                    flash('You are now logged in.', 'success')
+                login_user(user)
+                flash('You are now logged in.', 'success')
             # remember to flash a message to the user
-                    return redirect(url_for("/secure-page"))  # they should be redirected to a secure-page route instead
+                return redirect(url_for("secure_page"))  # they should be redirected to a secure-page route instead
+            else:
+                flash('Something went wrong.Check your access info and try again.', 'danger')
     return render_template("login.html", form=form)
 
 
@@ -81,6 +82,10 @@ def send_text_file(file_name):
     file_dot_text = file_name + '.txt'
     return app.send_static_file(file_dot_text)
 
+@app.route('/secure-page')
+@login_required
+def secure_page():
+    return render_template('secure_page.html')
 
 @app.after_request
 def add_header(response):

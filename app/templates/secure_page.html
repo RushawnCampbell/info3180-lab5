@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block css %} <link rel="stylesheet" href="{{url_for('static', filename= 'css/app.css')}}"/> {% endblock %}
+{% block main %}
+{% include 'flash_messages.html' %}
+<h1>Secure Page</h1>
+<p>
+    Ethics are basic standards or ideals that regulate the actions of a person or a community. 
+    This is not a responsibility to bear, but a wise and successful guide to existence and progress. 
+    Ethics is essential in business, as well as in academic institutions and social structures because 
+    it is a crucial cornerstone on which an enlightened system is built.
+</p>
+
+{% endblock %}
